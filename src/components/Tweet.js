@@ -2,19 +2,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatTweet, formatDate } from '../utils/helpers'
 import { TiArrowBackOutline, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti'
+import {handleToggleTweet} from '../actions/tweets'
 
 class Tweet extends Component {
 
     toParnet = (e, parent) => {
         e.preventDefault();
-
-        //Todo redirect to parent tweet
+        
     }
 
     handleLike = (e) => {
         e.preventDefault()
 
         // todo: Handle Like Tweet
+        const {dispatch, tweet, authedUser} = this.props
+        dispatch(handleToggleTweet({
+            id: tweet.id,
+            authedUser,
+            hasLiked: tweet.hasLiked
+        }))
     }
 
     render() {
