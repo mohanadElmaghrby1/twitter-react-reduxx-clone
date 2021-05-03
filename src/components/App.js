@@ -1,20 +1,32 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import {handleinitialData} from '../actions/shared'
-
+import { connect } from 'react-redux'
+import { handleinitialData } from '../actions/shared'
+import Dashboard from './Dashboard'
+import LoadinBar from 'react-redux-loading'
 class App extends Component {
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.dispatch(handleinitialData())
   }
 
   render() {
+    console.log('app rendring again:', this.props.loading)
+
     return (
       <div>
-        Starter Code
+        <LoadinBar />
+        {this.props.loading ? null :
+          <Dashboard />
+        }
       </div>
     )
   }
 }
 
-export default connect()(App)
+function mapStateToProps({ authedUser }) {
+  return {
+    loading: authedUser === null
+  }
+}
+
+export default connect(mapStateToProps)(App)
