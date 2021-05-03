@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { formatTweet, formatDate } from '../utils/helpers'
 import { TiArrowBackOutline, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti'
 import {handleToggleTweet} from '../actions/tweets'
+import { Link, withRouter} from 'react-router-dom'
 
 class Tweet extends Component {
 
-    toParnet = (e, parent) => {
+    toParnet = (e, id) => {
         e.preventDefault();
-        
+        this.props.history.push(`/tweet/${id}`)    
     }
 
     handleLike = (e) => {
@@ -24,7 +25,7 @@ class Tweet extends Component {
     }
 
     render() {
-        const { tweet } = this.props;
+        const { tweet, id } = this.props;
         if (tweet === null)
             return (<p>This Tweet does not exist!</p>)
 
@@ -34,7 +35,7 @@ class Tweet extends Component {
 
 
         return (
-            <div className='tweet'>
+            <Link to={`/tweet/${id}`} className='tweet'>
                 <img
                     src={avatar}
                     alt={`Avaltar of ${name}`}
@@ -45,7 +46,7 @@ class Tweet extends Component {
                         <div className=''>{formatDate(timestamp)}</div>
                         {parent && (
                             <button className='replying-to'
-                                onClick={(e) => this.toParnet(e, parent)}>
+                                onClick={(e) => this.toParnet(e, parent.id)}>
                                 replying to @{parent.author}
                             </button>
                         )}
@@ -63,7 +64,7 @@ class Tweet extends Component {
                     </div>
                 </div>
 
-            </div>
+            </Link>
         )
     }
 }
@@ -79,4 +80,4 @@ function mapStateToProps({ authedUser, users, tweets }, { id }) {
     }
 }
 
-export default connect(mapStateToProps)(Tweet)
+export default  withRouter(connect(mapStateToProps)(Tweet))
